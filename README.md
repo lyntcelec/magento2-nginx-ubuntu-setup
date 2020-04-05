@@ -114,9 +114,9 @@ Open browser: http://localhost
 <img src="images/4.png" height="300em" />
 <img src="images/5.png" height="300em" />
 <img src="images/6a.png" height="300em" />
-<img src="images/done.png" height="800em" />
-<img src="images/admin.png" height="1000em" />
-<img src="images/shop.png" height="1000em" />
+<img src="images/done.png" height="500em" />
+<img src="images/admin.png" height="500em" />
+<img src="images/shop.png" height="500em" />
 
 ## Backup & restore docker container:
 ### Backup
@@ -131,10 +131,26 @@ REPOSITORY                    TAG                 IMAGE ID            CREATED   
 magento2-nginx-ubuntu         latest              f6a3f0e82628        9 seconds ago       1.76GB
 ```
 ```sh
-docker save -o magento2-nginx-ubuntu.tar magento2-nginx-ubuntu
+$ docker save -o magento2-nginx-ubuntu.tar magento2-nginx-ubuntu
 ```
 ### Restore
 ```sh
-docker load -i magento2-nginx-ubuntu.tar
-docker images
+$ docker load -i magento2-nginx-ubuntu.tar
+$ docker images
+```
+```sh
+REPOSITORY                    TAG                 IMAGE ID            CREATED             SIZE
+magento2-nginx-ubuntu         latest              f6a3f0e82628        9 seconds ago       1.76GB
+```
+
+## Notes:
+```sh
+$ service --status-all
+```
+<img src="status-all.png" height="300em" />
+
+```sh
+$ service php7.3-fpm restart
+$ service nginx restart
+$ service mysql restart
 ```
