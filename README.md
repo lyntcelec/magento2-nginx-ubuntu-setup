@@ -147,7 +147,7 @@ magento2-nginx-ubuntu         latest              f6a3f0e82628        9 seconds 
 ```sh
 $ service --status-all
 ```
-<img src="status-all.png" height="300em" />
+<img src="images/status-all.png" height="300em" />
 
 ```sh
 $ service php7.3-fpm restart
