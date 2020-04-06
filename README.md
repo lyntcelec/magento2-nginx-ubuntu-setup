@@ -90,7 +90,7 @@ $ chmod -R 755 /var/www/html/magento
 ```sh
 $ nano /etc/nginx/sites-available/magento
 ```
-Copy magento_conf and paste to this file
+Copy magento.conf and paste to this file
 ```sh
 $ ln -s /etc/nginx/sites-available/magento /etc/nginx/sites-enabled/
 $ nginx -t
@@ -117,6 +117,51 @@ Open browser: http://localhost
 <img src="images/done.png" height="500em" />
 <img src="images/admin.png" height="500em" />
 <img src="images/shop.png" height="500em" />
+
+## Install phpMyAdmin
+```sh
+$ apt install phpmyadmin
+```
+```sh
+Configure database for phpmyadmin with dbconfig-common? [yes/no] yes
+(Enter the items you want to select, separated by spaces.)
+(space and enter)
+```
+*** During the installation, it will prompt you to select a web server to configure. Nginx isn’t in the list, so press the Tab key and hit OK to skip this step.
+```sh
+$ mysql -u root
+```
+```sh
+mysql> show grants for phpmyadmin@localhost;
++--------------------------------------------------------------------+
+| Grants for phpmyadmin@localhost                                    |
++--------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'phpmyadmin'@'localhost'                     |
+| GRANT ALL PRIVILEGES ON `phpmyadmin`.* TO 'phpmyadmin'@'localhost' |
++--------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> exit;
+Bye
+```
+```sh
+$ nano /etc/nginx/sites-available/phpmyadmin
+```
+Copy phpmyadmin.conf and paste to this file
+```sh
+$ ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/
+$ nginx -t
+$ service nginx restart
+```
+### *Login without a password is forbidden by configuration (see AllowNoPassword)*
+```sh
+$ nano /etc/phpmyadmin/config.inc.php
+```
+Find the line:
+```sh
+// $cfg['Servers'][$i]['AllowNoPassword'] = TRUE;
+```
+Uncomment that line; you’ll remove the //.
 
 ## Backup & restore docker container:
 ### Backup
