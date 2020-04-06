@@ -6,7 +6,7 @@ $ mkdir ~/docker_workspace
 $ cd ~/docker_workspace
 ```
 ```sh
-docker run -p 80:80 -p 3306:3306 -p 8000:8000 --cpuset-cpus="0-3" --name ubuntu-magento -w $PWD -it -v
+docker run -p 80:80 -p 3306:3306 -p 8000:8000 --cpuset-cpus="0-3" --name ubuntu-magento -w $PWD -it -v $PWD:$PWD ubuntu:18.04
 ```
 - port 80: magento site
 - port 3306: mysql server
@@ -28,6 +28,7 @@ press ctrl + w for searching
 memory_limit = 2G
 max_execution_time = 3600
 max_input_time = 1800
+max_input_vars = 10000
 upload_max_filesize = 128M
 zlib.output_compression = On
 press ctrl + O for saving.
@@ -120,7 +121,7 @@ Open browser: http://localhost
 
 ## Install phpMyAdmin
 ```sh
-$ apt install phpmyadmin
+$ apt install -y phpmyadmin
 ```
 ```sh
 Configure database for phpmyadmin with dbconfig-common? [yes/no] yes
@@ -152,6 +153,9 @@ Copy phpmyadmin.conf and paste to this file
 $ ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/
 $ nginx -t
 $ service nginx restart
+```
+```sh
+open http://localhost:8000/
 ```
 ### *Login without a password is forbidden by configuration (see AllowNoPassword)*
 ```sh
@@ -209,3 +213,26 @@ service php7.3-fpm restart
 service nginx restart
 service mysql restart
 ```
+### Fix 'Invalid Form Key. Please refresh the page.'
+use the following SQL query on the MySQL console or in a client like phpMyAdmin:
+```sh
+open http://localhost:8000/
+```
+```sh
+DELETE FROM core_config_data WHERE path='web/cookie/cookie_domain';
+DELETE FROM core_config_data WHERE path='web/cookie/cookie_path';
+```
+
+```sh
+$ cd /var/www/html/magento
+$ php bin/magento cache:clean
+$ php bin/magento cache:flush
+```
+```sh
+$ nano /etc/php/7.3/fpm/php.ini
+```
+press ctrl + w for searching
+```sh
+max_input_vars = 10000
+```
+press ctrl + O for saving.
