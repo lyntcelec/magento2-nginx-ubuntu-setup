@@ -225,8 +225,12 @@ DELETE FROM core_config_data WHERE path='web/cookie/cookie_path';
 
 ```sh
 $ cd /var/www/html/magento
+$ rm -rf var/cache var/page_cache var/view_processed
+$ php bin/magento setup:di:compile
 $ php bin/magento cache:clean
 $ php bin/magento cache:flush
+$ chown -R www-data:www-data /var/www/html/magento
+$ chmod -R 755 /var/www/html/magento
 ```
 ```sh
 $ nano /etc/php/7.3/fpm/php.ini
