@@ -6,9 +6,9 @@ $ mkdir ~/docker_workspace
 $ cd ~/docker_workspace
 ```
 ```sh
-docker run -p 80:80 -p 3306:3306 -p 8000:8000 --cpuset-cpus="0-3" --name ubuntu-magento -w $PWD -it -v $PWD:$PWD ubuntu:18.04
+docker run -p 8080:80 -p 3306:3306 -p 8000:8000 --cpuset-cpus="0-3" --name ubuntu-magento -w $PWD -it -v $PWD:$PWD ubuntu:18.04
 ```
-- port 80: magento site
+- port 8080: magento site
 - port 3306: mysql server
 - port 8000: phpmyadmin
 
@@ -95,7 +95,7 @@ Copy magento.conf and paste to this file
 ```sh
 $ ln -s /etc/nginx/sites-available/magento /etc/nginx/sites-enabled/
 $ nginx -t
-$ service nginx restart
+$ service nginx reload
 ```
 ## Create a Magento database:
 ```sh
@@ -105,8 +105,25 @@ $ mysql -u root -p
 mysql> create database magento;
 mysql> exit;
 ```
+
+## If you want to deploy to production server
+### In server side:
+* shop.example.com : this is my example domain
+```sh
+$ sudo nano /etc/nginx/sites-available/shop.example.com
+```
+Copy shop.example.com and paste to this file
+```sh
+$ sudo ln -s /etc/nginx/sites-available/shop.example.com /etc/nginx/sites-enabled/
+$ sudo nginx -t
+$ sudo service nginx reload
+```
+
 ## Setup magento on browser
-Open browser: http://localhost
+Open browser: http://localhost:8080
+
+If deploy production server
+Open browser: http://shop.example.com
 
 <img src="images/1a.png" height="300em" />
 <img src="images/1b.png" height="300em" />
@@ -152,7 +169,7 @@ Copy phpmyadmin.conf and paste to this file
 ```sh
 $ ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/
 $ nginx -t
-$ service nginx restart
+$ service nginx reload
 ```
 ```sh
 open http://localhost:8000/
